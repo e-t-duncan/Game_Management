@@ -21,7 +21,7 @@ public class Game {
     @Column(name = "Genre", length = 50)
     private String gameGenre;
 
-    @Column(name = "ReleaseDate", length = 10)
+    @Column(name = "ReleaseDate")
     private LocalDate releaseDate;
 
     @Column(name = "Platform", length = 25)

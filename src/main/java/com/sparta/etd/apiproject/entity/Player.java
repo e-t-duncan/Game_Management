@@ -1,9 +1,11 @@
 package com.sparta.etd.apiproject.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "players")
@@ -20,11 +22,15 @@ public class Player {
     @Column(name = "Email", length = 50)
     private String email;
 
-    @Column(name = "JoinDate", length = 10)
+    @Column(name = "JoinDate")
     private LocalDate joinDate;
 
-    @Column(name = "Level", length = 100)
+    @Column(name = "Level")
     private int playerLevel;
+
+    @ManyToMany(mappedBy = "players")
+    @JsonBackReference
+    private List<Tournament> tournaments;
 
     public Player(String playerName, String email, LocalDate joinDate, int playerLevel) {
         this.playerName = playerName;
@@ -74,5 +80,13 @@ public class Player {
 
     public void setPlayerLevel(int playerLevel) {
         this.playerLevel = playerLevel;
+    }
+
+    public List<Tournament> getTournaments() {
+        return tournaments;
+    }
+
+    public void setTournaments(List<Tournament> tournaments) {
+        this.tournaments = tournaments;
     }
 }
