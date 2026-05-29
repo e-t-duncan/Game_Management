@@ -4,6 +4,7 @@ package com.sparta.etd.apiproject.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name="games")
@@ -25,6 +26,9 @@ public class Game {
 
     @Column(name = "Platform", length = 25)
     private String platform;
+
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+    private List<Tournament> tournaments;
 
     public Game(String gameTitle, String gameGenre, LocalDate releaseDate, String platform) {
         this.gameTitle = gameTitle;
@@ -74,5 +78,13 @@ public class Game {
 
     public void setPlatform(String platform) {
         this.platform = platform;
+    }
+
+    public List<Tournament> getTournaments() {
+        return tournaments;
+    }
+
+    public void setTournaments(List<Tournament> tournaments) {
+        this.tournaments = tournaments;
     }
 }
