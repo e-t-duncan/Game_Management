@@ -3,6 +3,7 @@ package com.sparta.etd.apiproject.service;
 
 import com.sparta.etd.apiproject.dto.GameDto;
 import com.sparta.etd.apiproject.dto.GameMapper;
+import com.sparta.etd.apiproject.dto.GamePatchDto;
 import com.sparta.etd.apiproject.entity.Game;
 import com.sparta.etd.apiproject.repository.GameRepository;
 import org.springframework.stereotype.Service;
@@ -49,19 +50,28 @@ public class GameService {
         return false;
     }
 
-    public GameDto updateGame(int id, GameDto gameDto){
+    public GameDto updateGame(int id, GamePatchDto dto) {
 
         Game game = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Could not find game by that id"));
+                .orElseThrow(() -> new RuntimeException("Game not found"));
 
-        game.setGameTitle(gameDto.getGameTitle());
-        game.setGameGenre(gameDto.getGameGenre());
-        game.setPlatform(gameDto.getPlatform());
-        game.setReleaseDate(gameDto.getReleaseDate());
+        if (dto.getGameTitle() != null && !dto.getGameTitle().equals("string")) {
+            game.setGameTitle(dto.getGameTitle());
+        }
 
-        Game updated = repository.save(game);
+        if (dto.getGameGenre() != null && !dto.getGameGenre().equals("string")) {
+            game.setGameGenre(dto.getGameGenre());
+        }
 
-        return mapper.toDTO(updated);
+        if (dto.getPlatform() != null && !dto.getPlatform().equals("string")) {
+            game.setPlatform(dto.getPlatform());
+        }
+
+        if (dto.getReleaseDate() != null) {
+            game.setReleaseDate(dto.getReleaseDate());
+        }
+
+        return mapper.toDTO(repository.save(game));
     }
 
 }
