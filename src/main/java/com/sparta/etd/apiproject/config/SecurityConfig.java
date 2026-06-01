@@ -1,4 +1,4 @@
-package com.sparta.etd.apiproject;
+package com.sparta.etd.apiproject.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
