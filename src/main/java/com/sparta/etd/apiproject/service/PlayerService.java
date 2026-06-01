@@ -2,10 +2,13 @@ package com.sparta.etd.apiproject.service;
 
 import com.sparta.etd.apiproject.dto.PlayerDto;
 import com.sparta.etd.apiproject.dto.PlayerMapper;
+import com.sparta.etd.apiproject.dto.PlayerPatchDto;
+import com.sparta.etd.apiproject.entity.Game;
 import com.sparta.etd.apiproject.entity.Player;
 import com.sparta.etd.apiproject.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,19 +55,26 @@ public class PlayerService {
     }
 
     // Update player
-    public PlayerDto updatePlayer(int id, PlayerDto playerDto) {
-
+    public PlayerDto updatePlayer(int id, PlayerPatchDto dto) {
         Player player = repository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Could not find player by that id"));
+                .orElseThrow(() -> new RuntimeException("Player not found"));
 
-        player.setPlayerName(playerDto.getPlayerName());
-        player.setEmail(playerDto.getEmail());
-        player.setPlayerLevel(playerDto.getPlayerLevel());
-        player.setJoinDate(playerDto.getJoinDate());
+        if (dto.getPlayerName() != null && !dto.getPlayerName().equals("string")) {
+            player.setPlayerName(dto.getPlayerName());
+        }
 
-        Player updated = repository.save(player);
+        if (dto.getPlayerLevel() != null) {
+            player.setPlayerLevel(dto.getPlayerLevel());
+        }
 
-        return mapper.toDTO(updated);
+        if (dto.getEmail() != null && !dto.getEmail().equals("string")) {
+            player.setEmail(dto.getEmail());
+        }
+
+        if (dto.getJoinDate() != null || dto.getJoinDate().equals(LocalDate.now())){
+            player.setJoinDate(dto.getJoinDate());
+        }
+
+        return mapper.toDTO(repository.save(player));
     }
 }

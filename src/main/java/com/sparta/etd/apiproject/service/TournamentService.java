@@ -2,10 +2,12 @@ package com.sparta.etd.apiproject.service;
 
 import com.sparta.etd.apiproject.dto.TournamentDto;
 import com.sparta.etd.apiproject.dto.TournamentMapper;
+import com.sparta.etd.apiproject.dto.TournamentPatchDto;
 import com.sparta.etd.apiproject.entity.Tournament;
 import com.sparta.etd.apiproject.repository.TournamentRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,18 +56,24 @@ public class TournamentService {
 
     // Update tournament
     public TournamentDto updateTournament(int id,
-                                          TournamentDto tournamentDto) {
+                                          TournamentPatchDto dto) {
 
         Tournament tournament = repository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Could not find tournament by that id"));
+                .orElseThrow(() -> new RuntimeException("Could not find tournament by that id"));
 
-        tournament.setTournamentName(tournamentDto.getTournamentName());
-        tournament.setStartDate(tournamentDto.getStartDate());
-        tournament.setMaxPlayers(tournamentDto.getMaxPlayers());
+        if (dto.getTournamentName() != null && !dto.getTournamentName().equals("string")) {
+            tournament.setTournamentName(dto.getTournamentName());
+        }
+
+        if (dto.getStartDate() != null && !dto.getStartDate().equals(LocalDate.now())) {
+            tournament.setStartDate(dto.getStartDate());
+        }
+
+        if (dto.getMaxPlayers() != null) {
+            tournament.setMaxPlayers(dto.getMaxPlayers());
+        }
 
         Tournament updated = repository.save(tournament);
-
         return mapper.toDTO(updated);
     }
 }

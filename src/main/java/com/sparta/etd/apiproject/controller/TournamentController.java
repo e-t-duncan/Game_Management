@@ -1,4 +1,77 @@
 package com.sparta.etd.apiproject.controller;
 
+import com.sparta.etd.apiproject.dto.TournamentDto;
+import com.sparta.etd.apiproject.dto.TournamentPatchDto;
+import com.sparta.etd.apiproject.service.TournamentService;
+import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/tournaments")
 public class TournamentController {
+
+    private final TournamentService service;
+
+    public TournamentController(TournamentService service) {
+        this.service = service;
+    }
+
+    @Operation(summary = "Get all tournaments", description = "Returns a list of all tournaments")
+    @GetMapping
+    public ResponseEntity<List<TournamentDto>> getAllTournaments() {
+        var tournaments = service.getAllTournaments();
+        return ResponseEntity.ok(tournaments);
+    }
+
+    @Operation(summary = "Get tournament by Id", description = "Returns a tournament if the ID exists")
+    @GetMapping("/{id}")
+    public ResponseEntity<TournamentDto> getTournamentById(@PathVariable int id) {
+        var tournament = service.getTournamentByID(id);
+
+        if (tournament != null) {
+            return ResponseEntity.ok(tournament);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Create a new tournament", description = "Adds a new tournament to the system")
+    @PostMapping
+    public ResponseEntity<TournamentDto> createTournament(@RequestBody TournamentDto tournamentDto) {
+        TournamentDto savedTournament = service.saveTournament(tournamentDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedTournament);
+    }
+
+    @Operation(summary = "Update tournament", description = "Partially updates an existing tournament")
+    @PatchMapping("/{id}")
+    public ResponseEntity<TournamentDto> updateTournament(
+            @PathVariable int id,
+            @RequestBody TournamentPatchDto tournamentDto
+    ) {
+
+        TournamentDto updatedTournament = service.updateTournament(id, tournamentDto);
+
+        if (updatedTournament == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(updatedTournament);
+    }
+
+    @Operation(summary = "Delete tournament", description = "Deletes a tournament by ID")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTournament(@PathVariable int id) {
+
+        boolean deleted = service.deleteTournament(id);
+
+        if (!deleted) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.noContent().build();
+    }
 }

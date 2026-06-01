@@ -26,7 +26,7 @@ public class Tournament {
     private int maxPlayers;
 
     @ManyToOne
-    @JoinColumn(name = "GameID", nullable = false)
+    @JoinColumn(name = "GameID", nullable = true)
     private Game game;
 
     @ManyToMany
