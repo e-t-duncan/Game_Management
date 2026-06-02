@@ -2,8 +2,11 @@ package com.sparta.etd.apiproject.controller;
 
 import com.sparta.etd.apiproject.dto.PlayerDto;
 import com.sparta.etd.apiproject.dto.PlayerPatchDto;
+import com.sparta.etd.apiproject.modelAssembler.PlayerModelAssembler;
 import com.sparta.etd.apiproject.service.PlayerService;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,27 +19,39 @@ public class PlayerController {
 
     private final PlayerService service;
 
-    public PlayerController(PlayerService service) {
+    private final PlayerModelAssembler assembler;
+
+    public PlayerController(PlayerService service,
+                            PlayerModelAssembler assembler) {
+
         this.service = service;
+        this.assembler = assembler;
     }
 
     @Operation(summary = "Get all players", description = "Provides a list of all players")
     @GetMapping
-    public ResponseEntity<List<PlayerDto>> getAllPlayers() {
-        var players = service.getAllPlayers();
-        return ResponseEntity.ok(players);
+    public ResponseEntity<CollectionModel<EntityModel<PlayerDto>>> getAllPlayers() {
+
+        var players = service.getAllPlayers()
+                .stream()
+                .map(assembler::toModel)
+                .toList();
+
+        return ResponseEntity.ok(CollectionModel.of(players));
     }
 
     @Operation(summary = "Get player by Id", description = "Returns a player if the ID exists")
     @GetMapping("/{id}")
-    public ResponseEntity<PlayerDto> getPlayerById(@PathVariable int id) {
-        var player = service.getPlayerByID(id);
+    public ResponseEntity<EntityModel<PlayerDto>> getPlayerById(
+            @PathVariable int id) {
 
-        if (player != null) {
-            return ResponseEntity.ok(player);
+        PlayerDto player = service.getPlayerByID(id);
+
+        if (player == null) {
+            return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(assembler.toModel(player));
     }
 
     @Operation(summary = "Create a new player", description = "Adds a new player to the system")
