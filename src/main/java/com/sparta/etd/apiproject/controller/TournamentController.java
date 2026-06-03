@@ -6,6 +6,7 @@ import com.sparta.etd.apiproject.service.TournamentService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +40,7 @@ public class TournamentController {
         return ResponseEntity.notFound().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Create a new tournament", description = "Adds a new tournament to the system")
     @PostMapping
     public ResponseEntity<TournamentDto> createTournament(@RequestBody TournamentDto tournamentDto) {
@@ -46,6 +48,7 @@ public class TournamentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTournament);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update tournament", description = "Partially updates an existing tournament")
     @PatchMapping("/{id}")
     public ResponseEntity<TournamentDto> updateTournament(
@@ -62,6 +65,7 @@ public class TournamentController {
         return ResponseEntity.ok(updatedTournament);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete tournament", description = "Deletes a tournament by ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTournament(@PathVariable int id) {

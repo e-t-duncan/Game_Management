@@ -147,3 +147,33 @@ src/main/java
 - Extend HATEOAS support to Games and Tournaments
 - Improve validation and exception handling
 - Develop a thymeleaf view
+
+```mermaid
+erDiagram
+    GAME {
+        int GameID PK
+        string Title
+        string Genre
+        date ReleaseDate
+        string Platform
+    }
+
+    TOURNAMENT {
+        int TournamentID PK
+        string Name
+        date StartDate
+        int MaxPlayers
+        int GameID FK
+    }
+
+    PLAYER {
+        int PlayerID PK
+        string Name
+        string Email
+        date JoinDate
+        int Level
+    }
+
+    GAME ||--o{ TOURNAMENT : contains
+    TOURNAMENT }o--o{ PLAYER : registers
+```

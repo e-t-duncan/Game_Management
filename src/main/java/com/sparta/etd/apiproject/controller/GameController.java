@@ -9,6 +9,7 @@ import com.sparta.etd.apiproject.repository.GameRepository;
 import com.sparta.etd.apiproject.service.GameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -41,6 +42,7 @@ public class GameController {
         return ResponseEntity.notFound().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Add a new game", description = "If a game has all the correct information, adds them")
     @PostMapping
     public ResponseEntity<GameDto> createGame(@RequestBody GameDto gameDto) {
@@ -49,6 +51,7 @@ public class GameController {
                 .body(savedGame);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Updates an existing game", description = "If a game is present update it")
     @PatchMapping("/{id}")
     public ResponseEntity<GameDto> updateGame(
@@ -65,6 +68,7 @@ public class GameController {
         return ResponseEntity.ok(updatedGame);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(
             summary = "Delete a game",
             description = "Deletes the game associated with the provided game ID."
