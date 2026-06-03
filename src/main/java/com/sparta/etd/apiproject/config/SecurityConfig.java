@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
@@ -24,21 +24,17 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**"
-                        ).hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .defaultSuccessUrl("/swagger-ui/index.html", true)
+                        .defaultSuccessUrl("/", true)
                         .permitAll()
-                );
+                )
+                .logout(logout -> logout.permitAll());
 
         return http.build();
     }
-
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder encoder) {
 
@@ -54,7 +50,6 @@ public class SecurityConfig {
                 .roles("USER")
                 .build();
 
-        // In-memory manager with both users
         return new InMemoryUserDetailsManager(admin, user);
     }
 
