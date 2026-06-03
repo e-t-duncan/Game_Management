@@ -3,28 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Game Management Dashboard</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f0f2f5; }
-        h1 { color: #333; }
-        nav a {
-            display: inline-block;
-            margin: 10px 20px;
-            padding: 10px 20px;
-            background: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        nav a:hover { background: #45a049; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<h1>Game Management Dashboard</h1>
-<nav>
-    <a th:href="@{/games}">Games</a>
-    <a th:href="@{/players}">Players</a>
-    <a th:href="@{/tournaments}">Tournaments</a>
-</nav>
-<p>Welcome to the Game API Dashboard. Use the links above to manage games, players, and tournaments.</p>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <div class="card">
+        <h2>Welcome!</h2>
+        <p class="text-muted">This dashboard provides an overview and quick access to all management functions for games, tournaments, and players.</p>
+        <div class="mt-2">
+            <a class="btn" th:href="@{/games}">Manage Games</a>
+            <a class="btn" th:href="@{/players}">Manage Players</a>
+            <a class="btn" th:href="@{/tournaments}">Manage Tournaments</a>
+        </div>
+    </div>
+</main>
+
+<footer>
+    &copy; 2026 Game Management Dashboard
+</footer>
+
 </body>
 </html>
