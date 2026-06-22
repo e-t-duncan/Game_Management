@@ -18,8 +18,8 @@ function Tournaments() {
 
             {tournaments.map(tournament => (
                 <div key={tournament.tournamentID}>
-                    <h3>{tournament.tournamentName}</h3>
-                    <h2>{tournament.startDate}</h2>
+                    <h2>{tournament.tournamentName}</h2>
+                    <h3>{tournament.startDate}</h3>
                 </div>
             ))}
         </div>

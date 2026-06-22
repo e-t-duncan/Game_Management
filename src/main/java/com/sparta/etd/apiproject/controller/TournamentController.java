@@ -75,4 +75,36 @@ public class TournamentController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(
+            summary = "Enroll player into tournament",
+            description = "Adds a player to a tournament if there is space available"
+    )
+    @PostMapping("/{tournamentId}/players/{playerId}")
+    public ResponseEntity<TournamentDto> enrollPlayer(
+            @PathVariable int tournamentId,
+            @PathVariable int playerId
+    ) {
+
+        TournamentDto updatedTournament =
+                service.enrollPlayer(tournamentId, playerId);
+
+        return ResponseEntity.ok(updatedTournament);
+    }
+
+    @Operation(
+            summary = "Assign game to tournament",
+            description = "Sets the game that the tournament will use"
+    )
+    @PutMapping("/{tournamentId}/game/{gameId}")
+    public ResponseEntity<TournamentDto> addGame(
+            @PathVariable int tournamentId,
+            @PathVariable int gameId
+    ) {
+
+        TournamentDto updatedTournament =
+                service.addGame(tournamentId, gameId);
+
+        return ResponseEntity.ok(updatedTournament);
+    }
 }

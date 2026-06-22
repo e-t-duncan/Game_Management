@@ -1,0 +1,73 @@
+.games-container {
+
+    padding: 30px;
+
+}
+
+
+.games-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 20px;
+
+}
+
+
+
+.game-card {
+
+    border: 1px solid #ccc;
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+    background: chocolate;
+
+}
+
+.game-form {
+    background: darkgreen;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+
+}
+
+
+
+.game-card h2 {
+
+    margin-top: 0;
+    color: #08060d;
+}
+
+.game-card p {
+    color: #08060d;
+}
+
+.add-button{
+    color: black;
+    background: chartreuse;
+}
+
+.delete-button{
+    color: black;
+    background: red;
+}
+
+
+button {
+
+    margin-right: 10px;
+
+    padding: 8px 15px;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+}

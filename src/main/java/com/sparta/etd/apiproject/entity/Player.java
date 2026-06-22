@@ -1,7 +1,7 @@
 package com.sparta.etd.apiproject.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -29,7 +29,7 @@ public class Player {
     private int playerLevel;
 
     @ManyToMany(mappedBy = "players")
-    @JsonBackReference
+    @JsonIgnore
     private List<Tournament> tournaments;
 
     public Player(String playerName, String email, LocalDate joinDate, int playerLevel) {

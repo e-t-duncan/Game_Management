@@ -1,10 +1,7 @@
 package com.sparta.etd.apiproject.entity;
-
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,12 +28,11 @@ public class Tournament {
 
     @ManyToMany
     @JoinTable(
-            name = "tournament_players",            // Join table name
-            joinColumns = @JoinColumn(name = "TournamentID"), // FK referencing Tournament
-            inverseJoinColumns = @JoinColumn(name = "PlayerID") // FK referencing Player
+            name = "tournament_players",
+            joinColumns = @JoinColumn(name = "TournamentID"),
+            inverseJoinColumns = @JoinColumn(name = "PlayerID")
     )
-    @JsonManagedReference
-    private List<Player> players;
+    private List<Player> players = new ArrayList<>();
 
     public Tournament() {
     }
@@ -94,5 +90,9 @@ public class Tournament {
 
     public void setPlayers(List<Player> players) {
         this.players = players;
+    }
+
+    public void addPlayer(Player player) {
+        players.add(player);
     }
 }

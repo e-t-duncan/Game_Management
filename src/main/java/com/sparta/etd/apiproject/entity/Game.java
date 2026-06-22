@@ -4,6 +4,7 @@ package com.sparta.etd.apiproject.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,7 +29,7 @@ public class Game {
     private String platform;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
-    private List<Tournament> tournaments;
+    private List<Tournament> tournaments = new ArrayList<>();
 
     public Game(String gameTitle, String gameGenre, LocalDate releaseDate, String platform) {
         this.gameTitle = gameTitle;
